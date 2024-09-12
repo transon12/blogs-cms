@@ -13,7 +13,6 @@ import LayoutDefaut from '../layouts/LayoutDefault';
 import LoginPage from '../layouts/loginPage';
 
 import { authProtectedFlattenRoutes, publicProtectedFlattenRoutes, publicLoginPage } from './index';
-
 const Routes = (props) => {
     const { layout, user } = useSelector((state) => ({
         layout: state.Layout,

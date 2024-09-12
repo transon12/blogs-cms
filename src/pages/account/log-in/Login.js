@@ -74,7 +74,7 @@ function Login() {
                 if (data.status === 'success') {
                     localStorage.setItem('datatoken', JSON.stringify(data.data.access_token));
                     localStorage.setItem('datauser', JSON.stringify(data.data.user));
-                    // window.location.href='http://localhost:3000/dashboard'
+                    window.location.href='http://localhost:3000/dashboard'
                     dispatch(responseLogin(data.data));
                 } else {
                     notification.open({

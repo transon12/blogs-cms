@@ -31,6 +31,10 @@ function approveMultipleMeApi(params) {
 function feedbackMultipleMeApi(params) {
     return api.update(`api/me/feedback/list`, params);
 }
+function changePasswordApi (params){
+    console.log(params);
+    return api.create(`api/student/change-password`, params);
+}
 
 export {
     getMeListApi,
@@ -40,4 +44,5 @@ export {
     feedbackMeApi,
     approveMultipleMeApi,
     feedbackMultipleMeApi,
+    changePasswordApi
 };

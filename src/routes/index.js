@@ -39,13 +39,13 @@ const dashboardRoutes = [
         route: PrivateRoute,
         roles: [ROLES.DLEAD],
     },
-    {
-        path: '/account',
-        name: 'Acount',
-        component: Information,
-        // route: PrivateRoute,
-        roles: Route,
-    },
+    // {
+    //     path: '/account',
+    //     name: 'Acount',
+    //     component: Information,
+    //     // route: PrivateRoute,
+    //     roles: Route,
+    // },
 ];
 const dashboardUser = [
     {
@@ -53,13 +53,6 @@ const dashboardUser = [
         name: 'Trang chủ',
         icon: 'fa-solid fa-house',
         component: Individual,
-        route: Route,
-    },
-    {
-        path: '/post-user',
-        name: 'Thêm mới bài viết',
-        icon: 'fa-solid fa-user',
-        component: PostUser,
         route: Route,
     },
     {
@@ -75,8 +68,8 @@ const dashboardUser = [
         icon: 'fa-solid fa-key',
         component: UpdatePassword,
         route: Route,
-        route: PrivateRoute,
-        roles: [ROLES.MEMBER, ROLES.DLEAD],
+        // route: PrivateRoute,
+        // roles: [ROLES.MEMBER, ROLES.DLEAD],
     },
 ];
 

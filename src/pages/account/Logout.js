@@ -11,7 +11,7 @@ import { logoutUser } from '../../redux/actions';
 
 import logoutIcon from '../../assets/images/logout-icon.svg';
 
-const Logout = (): React$Element<any> | React$Element<React$FragmentType> => {
+const Logout = () => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
 

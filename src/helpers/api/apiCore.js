@@ -6,7 +6,10 @@ import config from '../../config';
 // content type
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 axios.defaults.baseURL = config.API_URL;
-
+let datatoken = localStorage.getItem("datatoken")
+// cấu hình mặc định
+axios.defaults.headers.post['Content-Type'] = 'application/json';
+axios.defaults.headers.common['Authorization'] = 'Bearer ' + JSON.parse(datatoken);
 // intercepting to capture errors
 axios.interceptors.response.use(
     (response) => {
@@ -15,10 +18,10 @@ axios.interceptors.response.use(
     (error) => {
         // Any status codes that falls outside the range of 2xx cause this function to trigger
         let message;
-
         if (error && error.response && error.response.status === 404) {
             // window.location.href = '/not-found';
         } else {
+            
             switch (error.response.status) {
                 case 401:
                     message = 'Invalid credentials';
@@ -108,8 +111,11 @@ class APICore {
     /**
      * post given data to url
      */
-    create = (url, data) => {
-        return axios.post(url, data);
+    create = async (url, data) => {
+        console.log(url, data);
+        let res = await axios.post(url, data);
+        console.log(res);
+        return res
     };
 
     /**

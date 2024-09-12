@@ -9,7 +9,7 @@ const NavbarLeft = () => {
     const [isKey, setIsKey] = useState(false);
     const location = useLocation();
     let history = useHistory();
-    console.log(history.location.pathname);
+    // console.log(history.location.pathname);
     useEffect(() => {
         if (history.location.pathname === '/update-user') {
             setIsActive(true);

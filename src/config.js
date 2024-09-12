@@ -1,5 +1,5 @@
 const config = {
-    API_URL: process.env.REACT_APP_API_URL,
+    API_URL: "https://dev-api.rikkeiacademy.com/"
 };
 
 export default config;

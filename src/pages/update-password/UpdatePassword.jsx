@@ -1,51 +1,74 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import NavbarLeft from '../../components/navbarLeft/NavbarLeft';
+import { changePassword } from '../../redux/userInformation/actions';
 import './UpdatePassword.scss';
+import { Alert, Space, notification } from 'antd';
+import { useHistory } from 'react-router-dom';
 
 const UpdatePassword = () => {
+    const history = useHistory()
+    const dispatch = useDispatch();
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
-    const [error, setError] = useState('');
-    const [success, setSuccess] = useState('');
+    const [cancel, setCancel] = useState("")
 
-    const [errorMessage, setErrorMessage] = useState('');
     const validatePassword = (password) => {
         const pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
         return pattern.test(password);
     };
 
-    const handleChange = (event) => {
-        const password = event.target.value;
-        console.log(password);
-        setNewPassword(password);
-        if (!validatePassword(password)) {
-            setErrorMessage('Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt.');
-        } else {
-            setErrorMessage('');
-        }
+    const states = useSelector((states) => states);
+    const message = states.userInforReducer.payload;
+
+    const changePassSuccess = () => {
+        notification.success({
+            message: message.message,
+        });
     };
+    const changePassError = () => {
+        notification.error({
+            message: message,
+        });
+    };
+
+    const validateChangePass = () => {
+        notification.error({
+            message: "Mật khẩu mới chưa trùng khớp"
+        })
+    }
+
+    const validateChangeError = () => {
+        notification.error({
+            message: "Mời bạn nhập lại mật khẩu"
+        })
+    }
+
+    useEffect(() => {
+        if (message) {
+            if (message.status) {
+                changePassSuccess();
+                // history.push("#")
+            } else {
+                changePassError();
+            }
+        }
+    }, [message]);
+
     const handleSubmit = (event) => {
-        event.preventDefault();
-        setError('');
-        setSuccess('');
-
-        // if (oldPassword !== 'password') {
-        //     setError('Mật khẩu cũ không đúng.');
-        //     return;
-        // }
-
-        if (!validatePassword(newPassword)) {
-            return setError('Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt.');
+        if (newPassword === confirmNewPassword && oldPassword !== newPassword) {
+                event.preventDefault();
+            dispatch(changePassword({ old_password: oldPassword, password: newPassword }));
+        } else if(newPassword !== confirmNewPassword && oldPassword !== newPassword){
+            event.preventDefault();
+            validateChangePass()
+        } else {
+            event.preventDefault();
+            validateChangeError()
         }
-
-        if (newPassword !== confirmNewPassword) {
-            setError('Mật khẩu mới và xác nhận mật khẩu mới không khớp nhau.');
-            return;
-        }
-
-        setSuccess('Mật khẩu đã được thay đổi thành công.');
     };
+
     return (
         <div className="update-password">
             <NavbarLeft />
@@ -60,9 +83,11 @@ const UpdatePassword = () => {
                             </p>
                         </div>
                         <div className="container-small">
-                            <form onSubmit={handleSubmit}>
-                                {error && <div style={{ color: 'red' }}>{error}</div>}
-                                {success && <div style={{ color: 'green' }}>{success}</div>}
+                            <form 
+                            // onSubmit={handleSubmit}
+                            >
+                                {/* {error && <div style={{ color: 'red' }}>{error}</div>} */}
+                                {/* {success && <div style={{ color: 'green' }}>{success}</div>} */}
                                 <label className="input-password">
                                     <p>* Mật khẩu hiện tại</p>
                                     <input
@@ -74,7 +99,11 @@ const UpdatePassword = () => {
                                 <br />
                                 <label className="input-password">
                                     <p>* Mật khẩu mới</p>
-                                    <input type="password" value={newPassword} onChange={handleChange} />
+                                    <input
+                                        type="password"
+                                        value={newPassword}
+                                        onChange={(e) => setNewPassword(e.target.value)}
+                                    />
                                 </label>
                                 <br />
                                 <label className="input-password">
@@ -86,10 +115,15 @@ const UpdatePassword = () => {
                                     />
                                 </label>
                                 <br />
-                                <button type="submit" className="button-1">
+                                <button 
+                                type="submit" 
+                                className="button-1"
+                                value={cancel}
+                                onClick={()=> history.push("/")}
+                                >
                                     Hủy bỏ
                                 </button>
-                                <button type="submit" className="button-2">
+                                <button type="submit" className="button-2" onClick={handleSubmit}>
                                     Đổi mật khẩu
                                 </button>
                             </form>
